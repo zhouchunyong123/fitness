@@ -158,6 +158,19 @@
   }
   .video-tip{font-size:12px;color:var(--sub);text-align:center;margin-top:6px;}
 
+  /* 饮食 */
+  .meal-total{font-size:13px;color:var(--blue);font-weight:700;margin:4px 0 8px;}
+  .meal-item{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed #f0e2e6;}
+  .meal-item:last-child{border-bottom:none;}
+  .meal-tag{flex:0 0 42px;font-size:12px;font-weight:700;color:#fff;background:#7c6cff;border-radius:8px;text-align:center;padding:3px 0;margin-top:1px;}
+  .meal-tag.breakfast{background:#ff9f43;}
+  .meal-tag.lunch{background:#ff6b8a;}
+  .meal-tag.dinner{background:#7c6cff;}
+  .meal-tag.snack{background:#34c77b;}
+  .meal-info{flex:1;min-width:0;}
+  .meal-name{font-size:13px;color:var(--text);line-height:1.45;}
+  .meal-kcal{flex:0 0 auto;font-size:12px;color:var(--orange);font-weight:700;}
+
   /* 提示 */
   .note{font-size:12px;color:var(--sub);margin-top:10px;line-height:1.6;}
   footer{text-align:center;color:#cbb4bb;font-size:12px;margin-top:28px;line-height:1.8;}
@@ -199,6 +212,13 @@
     <div id="todayVideos"></div>
     <button class="checkin-btn" id="todayCheckin">✅ 今日打卡</button>
     <div class="note" id="todayNote"></div>
+  </div>
+
+  <!-- 今日饮食 -->
+  <div class="card">
+    <h2>今日饮食</h2>
+    <div id="mealList"></div>
+    <div class="note">少油少盐、控糖，多蛋白质和蔬菜；每餐七八分饱，细嚼慢咽。</div>
   </div>
 
   <!-- 7天计划 -->
@@ -250,7 +270,13 @@
         {tag:"主训练 · 跟练", title:"热身+拉伸+500个壶铃摇摆跟练完整版", bvid:"BV1qVePenE97", dur:"约 24 分钟"},
         {tag:"训练后 · 拉伸", title:"8分钟运动后拉伸", bvid:"BV1KX4y127mR", dur:"约 8 分钟"}
       ],
-      note:"先热身，用壶铃做髋铰链摇摆；新手可分多组完成，动作以教学为准，注意别塌腰。"
+      note:"先热身，用壶铃做髋铰链摇摆；新手可分多组完成，动作以教学为准，注意别塌腰。",
+      meals:[
+        {t:"早餐", n:"水煮蛋2个 + 燕麦粥(40g) + 香蕉半根", k:380},
+        {t:"午餐", n:"鸡胸肉炒时蔬(鸡胸120g) + 糙米饭1小碗", k:430},
+        {t:"晚餐", n:"番茄鸡蛋汤 + 清蒸鱼80g + 凉拌菠菜", k:330},
+        {t:"加餐", n:"无糖酸奶1杯", k:90}
+      ]
     },
     {
       name:"周二", num:"2", title:"哑铃全身塑形", kcal:260,
@@ -259,7 +285,13 @@
         {tag:"主训练 · 跟练", title:"30分钟暴汗有氧燃脂·哑铃高效燃脂（全程站立低冲击）", bvid:"BV1nJt16NE1Q", dur:"约 30 分钟"},
         {tag:"训练后 · 拉伸", title:"15分钟日常全身拉伸", bvid:"BV15V411a7cV", dur:"约 16 分钟"}
       ],
-      note:"全程站立、无跑跳，对膝盖友好；哑铃选能完成动作的重量即可。"
+      note:"全程站立、无跑跳，对膝盖友好；哑铃选能完成动作的重量即可。",
+      meals:[
+        {t:"早餐", n:"全麦面包2片 + 煎蛋1个 + 牛奶200ml", k:360},
+        {t:"午餐", n:"瘦牛肉炒青椒(100g) + 杂粮饭 + 水煮西兰花", k:450},
+        {t:"晚餐", n:"虾仁冬瓜汤 + 玉米半根 + 凉拌木耳", k:340},
+        {t:"加餐", n:"苹果1个", k:90}
+      ]
     },
     {
       name:"周三", num:"3", title:"有氧燃脂", kcal:260,
@@ -268,7 +300,13 @@
         {tag:"主训练 · 跟练", title:"30分钟全身哑铃燃脂塑形（有氧+力量全程站立）", bvid:"BV1BK4Q65E1U", dur:"约 30 分钟"},
         {tag:"训练后 · 拉伸", title:"10分钟全身舒展拉伸", bvid:"BV1aLk9YDEmx", dur:"约 10 分钟"}
       ],
-      note:"有氧+力量结合，注意保持呼吸，跟不上节奏可适当放慢。"
+      note:"有氧+力量结合，注意保持呼吸，跟不上节奏可适当放慢。",
+      meals:[
+        {t:"早餐", n:"小米粥1碗 + 水煮蛋1个 + 小番茄5颗", k:320},
+        {t:"午餐", n:"去皮鸡腿1个 + 糙米饭 + 清炒青菜", k:440},
+        {t:"晚餐", n:"菌菇豆腐汤 + 蒸南瓜 + 凉拌黄瓜", k:330},
+        {t:"加餐", n:"坚果一小把(10g)", k:70}
+      ]
     },
     {
       name:"周四", num:"4", title:"壶铃力量+塑形", kcal:240,
@@ -277,7 +315,13 @@
         {tag:"动作学习 · 必看", title:"如何做一个完美的壶铃摇摆", bvid:"BV1Rm41127KQ", dur:"约 6 分钟"},
         {tag:"训练后 · 拉伸", title:"8分钟运动后拉伸", bvid:"BV1KX4y127mR", dur:"约 8 分钟"}
       ],
-      note:"先看视频学好动作，再自己练 4~5 组（每组 15~20 个），组间休息 30 秒。"
+      note:"先看视频学好动作，再自己练 4~5 组（每组 15~20 个），组间休息 30 秒。",
+      meals:[
+        {t:"早餐", n:"鸡蛋蔬菜卷饼 + 无糖豆浆1杯", k:350},
+        {t:"午餐", n:"鱼香肉丝少油(瘦肉80g) + 杂粮饭 + 青菜", k:430},
+        {t:"晚餐", n:"海带豆腐汤 + 紫薯1个 + 凉拌生菜", k:320},
+        {t:"加餐", n:"梨1个", k:80}
+      ]
     },
     {
       name:"周五", num:"5", title:"哑铃燃脂", kcal:270,
@@ -286,7 +330,13 @@
         {tag:"主训练 · 跟练", title:"Jo的哑铃全身训练 30min·全身燃脂紧实手臂", bvid:"BV1WB4y1n7x5", dur:"约 30 分钟"},
         {tag:"训练后 · 拉伸", title:"15分钟日常全身拉伸", bvid:"BV15V411a7cV", dur:"约 16 分钟"}
       ],
-      note:"重点收紧手臂和全身线条，动作慢一点更安全、效果更好。"
+      note:"重点收紧手臂和全身线条，动作慢一点更安全、效果更好。",
+      meals:[
+        {t:"早餐", n:"燕麦牛奶粥 + 水煮蛋1个", k:360},
+        {t:"午餐", n:"虾仁炒西芹 + 糙米饭 + 番茄蛋汤", k:440},
+        {t:"晚餐", n:"清蒸鲈鱼 + 玉米 + 凉拌西兰花", k:340},
+        {t:"加餐", n:"无糖酸奶1杯", k:90}
+      ]
     },
     {
       name:"周六", num:"6", title:"拉伸放松日", kcal:150,
@@ -295,7 +345,13 @@
         {tag:"主训练 · 跟练", title:"20分钟久坐全身拉伸（周六野Zoey）", bvid:"BV1X142147nu", dur:"约 23 分钟"},
         {tag:"加练 · 放松", title:"4分钟拉伸跟练", bvid:"BV14M4m1r7HP", dur:"约 4 分钟"}
       ],
-      note:"恢复日，以拉伸放松为主，让肌肉恢复，也可出门快走 30 分钟。"
+      note:"恢复日，以拉伸放松为主，让肌肉恢复，也可出门快走 30 分钟。",
+      meals:[
+        {t:"早餐", n:"全麦馒头1个 + 牛奶 + 水煮蛋1个", k:370},
+        {t:"午餐", n:"白灼虾 + 杂粮饭 + 蒜蓉青菜", k:430},
+        {t:"晚餐", n:"蔬菜豆腐汤 + 蒸山药 + 凉拌", k:320},
+        {t:"加餐", n:"猕猴桃1个", k:50}
+      ]
     },
     {
       name:"周日", num:"7", title:"休息日", kcal:120,
@@ -303,7 +359,13 @@
       videos:[
         {tag:"放松 · 可选", title:"20分钟久坐全身拉伸（周六野Zoey）", bvid:"BV1X142147nu", dur:"约 23 分钟"}
       ],
-      note:"好好休息！可散步或做轻松拉伸，给身体充电，迎接新的一周。"
+      note:"好好休息！可散步或做轻松拉伸，给身体充电，迎接新的一周。",
+      meals:[
+        {t:"早餐", n:"杂粮粥 + 水煮蛋1个 + 水果", k:350},
+        {t:"午餐", n:"家常菜(米饭1碗 + 两素一荤少量)", k:500},
+        {t:"晚餐", n:"清淡汤面 + 蔬菜", k:400},
+        {t:"加餐", n:"水果1份", k:80}
+      ]
     }
   ];
 
@@ -427,10 +489,31 @@
     document.getElementById("weightList").innerHTML = html || '<div class="note">还没有体重记录，先记录一个吧。</div>';
   }
 
+  function mealTagClass(t){
+    if(t==="早餐") return "breakfast";
+    if(t==="午餐") return "lunch";
+    if(t==="晚餐") return "dinner";
+    return "snack";
+  }
+  function renderMeals(){
+    var day = DAYS[todayIndex()];
+    if(!day.meals){ document.getElementById("mealList").innerHTML=""; return; }
+    var total = 0, html = "";
+    for(var i=0;i<day.meals.length;i++){
+      var m = day.meals[i];
+      total += m.k;
+      html += '<div class="meal-item"><div class="meal-tag '+mealTagClass(m.t)+'">'+m.t+'</div>'
+        + '<div class="meal-info"><div class="meal-name">'+m.n+'</div></div>'
+        + '<div class="meal-kcal">'+m.k+' 千卡</div></div>';
+    }
+    document.getElementById("mealList").innerHTML = '<div class="meal-total">全天约 '+total+' 千卡</div>' + html;
+  }
+
   function renderAll(){
     renderProgress();
     renderStats();
     renderToday();
+    renderMeals();
     renderWeek();
     renderWeights();
   }
