@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#ff6b8a">
+<title>李月华 · 健身减肥打卡</title>
+<style>
+  :root{
+    --pink:#ff6b8a;
+    --pink-deep:#e14b6d;
+    --bg:#fff5f7;
+    --card:#ffffff;
+    --text:#3a2d33;
+    --sub:#a08a92;
+    --green:#34c77b;
+    --orange:#ff9f43;
+    --blue:#4f8cff;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+    background:linear-gradient(180deg,#ffe3ea 0%,var(--bg) 260px);
+    color:var(--text);
+    min-height:100vh;
+    padding-bottom:env(safe-area-inset-bottom);
+  }
+  .wrap{max-width:480px;margin:0 auto;padding:0 16px 40px;}
+
+  /* 头部 */
+  header{padding:24px 4px 8px;}
+  .greet{font-size:14px;color:var(--sub);margin-bottom:2px;}
+  h1{font-size:26px;margin:0;font-weight:800;letter-spacing:1px;}
+  h1 .heart{color:var(--pink);}
+  .subtitle{font-size:13px;color:var(--sub);margin-top:4px;}
+
+  /* 目标卡 */
+  .goal-card{
+    background:linear-gradient(135deg,#ff6b8a,#ff8fab);
+    color:#fff;border-radius:20px;padding:18px 20px;
+    box-shadow:0 8px 24px rgba(255,107,138,.35);
+    margin-top:14px;
+  }
+  .goal-row{display:flex;justify-content:space-between;align-items:center;}
+  .goal-num{font-size:15px;font-weight:700;}
+  .goal-num b{font-size:26px;margin:0 2px;}
+  .arrow{font-size:20px;margin:0 8px;opacity:.9;}
+  .progress-bar{height:10px;background:rgba(255,255,255,.35);border-radius:6px;margin-top:14px;overflow:hidden;}
+  .progress-fill{height:100%;background:#fff;border-radius:6px;transition:width .6s ease;}
+  .progress-txt{font-size:12px;margin-top:8px;opacity:.95;}
+
+  /* 统计 */
+  .stats{display:flex;gap:10px;margin-top:14px;}
+  .stat{flex:1;background:var(--card);border-radius:16px;padding:12px 8px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,.04);}
+  .stat b{display:block;font-size:20px;color:var(--pink-deep);}
+  .stat span{font-size:12px;color:var(--sub);}
+
+  /* 通用卡片 */
+  .card{background:var(--card);border-radius:18px;padding:16px;box-shadow:0 2px 12px rgba(0,0,0,.05);margin-top:14px;}
+  .card h2{font-size:17px;margin:0 0 12px;display:flex;align-items:center;gap:6px;}
+  .card h2::before{content:"";width:4px;height:16px;background:var(--pink);border-radius:2px;}
+
+  /* 今日训练 */
+  .today-badge{display:inline-block;background:#fff0f4;color:var(--pink-deep);font-size:12px;padding:3px 10px;border-radius:20px;font-weight:700;}
+  .today-title{font-size:19px;font-weight:800;margin:10px 0 2px;}
+  .today-kcal{font-size:13px;color:var(--orange);font-weight:700;}
+
+  /* 视频卡 */
+  .vid{
+    display:flex;align-items:center;gap:12px;background:#faf4f6;
+    border-radius:14px;padding:10px 12px;margin-top:10px;cursor:pointer;
+    transition:transform .1s;
+  }
+  .vid:active{transform:scale(.98);}
+  .play-btn{
+    width:44px;height:44px;border-radius:12px;flex:0 0 44px;
+    background:linear-gradient(135deg,var(--pink),var(--pink-deep));
+    display:flex;align-items:center;justify-content:center;color:#fff;
+  }
+  .play-btn svg{width:20px;height:20px;}
+  .vid-info{flex:1;min-width:0;}
+  .vid-tag{font-size:11px;color:var(--pink-deep);font-weight:700;}
+  .vid-title{font-size:14px;font-weight:700;margin:2px 0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .vid-meta{font-size:12px;color:var(--sub);}
+
+  /* 打卡按钮 */
+  .checkin-btn{
+    width:100%;margin-top:14px;border:none;border-radius:16px;padding:15px;
+    background:linear-gradient(135deg,var(--green),#25b56a);
+    color:#fff;font-size:17px;font-weight:800;letter-spacing:2px;
+    box-shadow:0 6px 16px rgba(52,199,123,.35);cursor:pointer;
+  }
+  .checkin-btn.done{background:linear-gradient(135deg,#e2e8f0,#cbd5e1);box-shadow:none;color:#64748b;}
+
+  /* 7天计划 */
+  .day-item{
+    display:flex;align-items:center;gap:12px;padding:13px 12px;
+    border-radius:14px;margin-top:10px;background:#faf4f6;cursor:pointer;
+  }
+  .day-item.today{background:#fff0f4;border:1.5px solid var(--pink);}
+  .day-item.done{opacity:.7;}
+  .day-num{
+    width:40px;height:40px;border-radius:12px;flex:0 0 40px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    background:#fff;color:var(--pink-deep);font-weight:800;font-size:11px;
+    box-shadow:0 2px 6px rgba(0,0,0,.06);
+  }
+  .day-num b{font-size:15px;line-height:1;}
+  .day-info{flex:1;min-width:0;}
+  .day-name{font-size:14px;font-weight:700;}
+  .day-desc{font-size:12px;color:var(--sub);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .day-kcal{font-size:12px;color:var(--orange);font-weight:700;flex:0 0 auto;}
+  .day-check{
+    width:26px;height:26px;border-radius:50%;border:2px solid #d8cfd3;flex:0 0 26px;
+    display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;
+  }
+  .day-check.on{background:var(--green);border-color:var(--green);}
+
+  /* 体重记录 */
+  .weight-input{display:flex;gap:10px;margin-top:6px;}
+  .weight-input input{
+    flex:1;border:1.5px solid #f0d8de;border-radius:12px;padding:12px;
+    font-size:16px;outline:none;color:var(--text);background:#faf4f6;
+  }
+  .weight-input input:focus{border-color:var(--pink);}
+  .weight-input button{
+    border:none;background:var(--pink);color:#fff;border-radius:12px;
+    padding:0 18px;font-size:15px;font-weight:700;cursor:pointer;
+  }
+  .weight-list{margin-top:12px;}
+  .weight-row{display:flex;justify-content:space-between;font-size:13px;padding:8px 2px;border-bottom:1px dashed #f0e2e6;}
+  .weight-row .w{font-weight:700;color:var(--pink-deep);}
+
+  /* 视频弹窗 */
+  .modal{
+    position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;
+    align-items:flex-end;justify-content:center;z-index:50;
+  }
+  .modal.show{display:flex;}
+  .modal-box{
+    width:100%;max-width:480px;background:#fff;border-radius:20px 20px 0 0;
+    padding:16px;padding-bottom:calc(16px + env(safe-area-inset-bottom));
+    animation:up .25s ease;
+  }
+  @keyframes up{from{transform:translateY(40px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+  .modal-head{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+  .modal-title{flex:1;font-size:15px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .modal-close{
+    width:30px;height:30px;border-radius:50%;background:#f1f1f1;border:none;
+    font-size:16px;cursor:pointer;color:#666;
+  }
+  .video-frame{width:100%;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:#000;}
+  .video-frame iframe{width:100%;height:100%;border:none;display:block;}
+  .open-bili{
+    display:block;text-align:center;margin-top:12px;color:var(--blue);
+    font-size:13px;text-decoration:none;font-weight:700;
+  }
+  .video-tip{font-size:12px;color:var(--sub);text-align:center;margin-top:6px;}
+
+  /* 提示 */
+  .note{font-size:12px;color:var(--sub);margin-top:10px;line-height:1.6;}
+  footer{text-align:center;color:#cbb4bb;font-size:12px;margin-top:28px;line-height:1.8;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="greet">每一天，都在变好的路上 💪</div>
+    <h1><span class="heart">李月华</span> 健身减肥计划</h1>
+    <div class="subtitle">居家训练 · 只有哑铃和壶铃 · 目标 115斤 → 105斤</div>
+  </header>
+
+  <!-- 目标进度 -->
+  <div class="goal-card">
+    <div class="goal-row">
+      <div class="goal-num">起始 <b id="startW">115</b>斤</div>
+      <div class="arrow">➜</div>
+      <div class="goal-num">目标 <b>105</b>斤</div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <div class="progress-txt" id="progressTxt">已减 0 斤 · 还剩 10 斤</div>
+  </div>
+
+  <!-- 统计 -->
+  <div class="stats">
+    <div class="stat"><b id="statStreak">0</b><span>连续打卡(天)</span></div>
+    <div class="stat"><b id="statTotal">0</b><span>累计打卡(次)</span></div>
+    <div class="stat"><b id="statKcal">0</b><span>累计消耗(千卡)</span></div>
+  </div>
+
+  <!-- 今日训练 -->
+  <div class="card" id="todayCard">
+    <h2>今日训练</h2>
+    <span class="today-badge" id="todayBadge">周一</span>
+    <div class="today-title" id="todayTitle">壶铃燃脂</div>
+    <div class="today-kcal" id="todayKcal">预计消耗 300 千卡</div>
+    <div id="todayVideos"></div>
+    <button class="checkin-btn" id="todayCheckin">✅ 今日打卡</button>
+    <div class="note" id="todayNote"></div>
+  </div>
+
+  <!-- 7天计划 -->
+  <div class="card">
+    <h2>本周计划</h2>
+    <div id="weekList"></div>
+  </div>
+
+  <!-- 体重记录 -->
+  <div class="card">
+    <h2>体重记录</h2>
+    <div class="weight-input">
+      <input type="number" id="weightVal" placeholder="输入体重（斤）" inputmode="decimal" step="0.1">
+      <button id="weightSave">记录</button>
+    </div>
+    <div class="weight-list" id="weightList"></div>
+    <div class="note">建议每周固定时间称重（如周日早晨空腹）记录一次，更能反映真实变化。</div>
+  </div>
+
+  <footer>
+    计划由家人为你定制 💗<br>
+    卡路里按体重 57.5kg 估算，仅供参考 · 数据保存在本机
+  </footer>
+</div>
+
+<!-- 视频弹窗 -->
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-title" id="modalTitle">视频</div>
+      <button class="modal-close" id="modalClose">✕</button>
+    </div>
+    <div class="video-frame"><iframe id="modalFrame" src="" allowfullscreen allow="autoplay; fullscreen; encrypted-media"></iframe></div>
+    <a class="open-bili" id="modalBili" href="#" target="_blank">在 Bilibili 中打开 ➜</a>
+    <div class="video-tip">如视频无法播放，请点上方链接打开 B 站观看</div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  // ===== 训练计划数据 =====
+  var DAYS = [
+    {
+      name:"周一", num:"1", title:"壶铃燃脂", kcal:300,
+      desc:"热身 + 500 个壶铃摇摆跟练",
+      videos:[
+        {tag:"主训练 · 跟练", title:"热身+拉伸+500个壶铃摇摆跟练完整版", bvid:"BV1qVePenE97", dur:"约 24 分钟"},
+        {tag:"训练后 · 拉伸", title:"8分钟运动后拉伸", bvid:"BV1KX4y127mR", dur:"约 8 分钟"}
+      ],
+      note:"先热身，用壶铃做髋铰链摇摆；新手可分多组完成，动作以教学为准，注意别塌腰。"
+    },
+    {
+      name:"周二", num:"2", title:"哑铃全身塑形", kcal:260,
+      desc:"30 分钟哑铃燃脂（低冲击）",
+      videos:[
+        {tag:"主训练 · 跟练", title:"30分钟暴汗有氧燃脂·哑铃高效燃脂（全程站立低冲击）", bvid:"BV1nJt16NE1Q", dur:"约 30 分钟"},
+        {tag:"训练后 · 拉伸", title:"15分钟日常全身拉伸", bvid:"BV15V411a7cV", dur:"约 16 分钟"}
+      ],
+      note:"全程站立、无跑跳，对膝盖友好；哑铃选能完成动作的重量即可。"
+    },
+    {
+      name:"周三", num:"3", title:"有氧燃脂", kcal:260,
+      desc:"30 分钟全身哑铃燃脂塑形",
+      videos:[
+        {tag:"主训练 · 跟练", title:"30分钟全身哑铃燃脂塑形（有氧+力量全程站立）", bvid:"BV1BK4Q65E1U", dur:"约 30 分钟"},
+        {tag:"训练后 · 拉伸", title:"10分钟全身舒展拉伸", bvid:"BV1aLk9YDEmx", dur:"约 10 分钟"}
+      ],
+      note:"有氧+力量结合，注意保持呼吸，跟不上节奏可适当放慢。"
+    },
+    {
+      name:"周四", num:"4", title:"壶铃力量+塑形", kcal:240,
+      desc:"壶铃摇摆动作学习 + 多组练习",
+      videos:[
+        {tag:"动作学习 · 必看", title:"如何做一个完美的壶铃摇摆", bvid:"BV1Rm41127KQ", dur:"约 6 分钟"},
+        {tag:"训练后 · 拉伸", title:"8分钟运动后拉伸", bvid:"BV1KX4y127mR", dur:"约 8 分钟"}
+      ],
+      note:"先看视频学好动作，再自己练 4~5 组（每组 15~20 个），组间休息 30 秒。"
+    },
+    {
+      name:"周五", num:"5", title:"哑铃燃脂", kcal:270,
+      desc:"30 分钟哑铃全身训练",
+      videos:[
+        {tag:"主训练 · 跟练", title:"Jo的哑铃全身训练 30min·全身燃脂紧实手臂", bvid:"BV1WB4y1n7x5", dur:"约 30 分钟"},
+        {tag:"训练后 · 拉伸", title:"15分钟日常全身拉伸", bvid:"BV15V411a7cV", dur:"约 16 分钟"}
+      ],
+      note:"重点收紧手臂和全身线条，动作慢一点更安全、效果更好。"
+    },
+    {
+      name:"周六", num:"6", title:"拉伸放松日", kcal:150,
+      desc:"20 分钟全身拉伸 · 恢复",
+      videos:[
+        {tag:"主训练 · 跟练", title:"20分钟久坐全身拉伸（周六野Zoey）", bvid:"BV1X142147nu", dur:"约 23 分钟"},
+        {tag:"加练 · 放松", title:"4分钟拉伸跟练", bvid:"BV14M4m1r7HP", dur:"约 4 分钟"}
+      ],
+      note:"恢复日，以拉伸放松为主，让肌肉恢复，也可出门快走 30 分钟。"
+    },
+    {
+      name:"周日", num:"7", title:"休息日", kcal:120,
+      desc:"休息 · 建议散步 30 分钟",
+      videos:[
+        {tag:"放松 · 可选", title:"20分钟久坐全身拉伸（周六野Zoey）", bvid:"BV1X142147nu", dur:"约 23 分钟"}
+      ],
+      note:"好好休息！可散步或做轻松拉伸，给身体充电，迎接新的一周。"
+    }
+  ];
+
+  var START_WEIGHT = 115;
+  var GOAL_WEIGHT = 105;
+
+  // ===== 存储 =====
+  function load(key, def){ try{ var v=localStorage.getItem(key); return v?JSON.parse(v):def; }catch(e){ return def; } }
+  function save(key, val){ try{ localStorage.setItem(key, JSON.stringify(val)); }catch(e){} }
+
+  var checkins = load("lyh_checkins", {});   // { "2026-09-08": 0 } 值为计划索引
+  var weights  = load("lyh_weights", []);     // [{date:"", w:115}]
+
+  // ===== 日期工具 =====
+  function todayStr(){ var d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+  function todayIndex(){ return (new Date().getDay()+6)%7; } // 周一=0 ... 周日=6
+  function fmtDate(s){ return s.slice(5).replace("-","/"); }
+
+  // ===== 渲染 =====
+  function latestWeight(){
+    if(weights.length) return weights[weights.length-1].w;
+    return START_WEIGHT;
+  }
+
+  function renderProgress(){
+    var w = latestWeight();
+    var lost = START_WEIGHT - w;
+    var total = START_WEIGHT - GOAL_WEIGHT;
+    var pct = Math.max(0, Math.min(100, Math.round(lost/total*100)));
+    document.getElementById("progressFill").style.width = pct+"%";
+    document.getElementById("startW").textContent = START_WEIGHT;
+    if(lost>=0){
+      document.getElementById("progressTxt").textContent = "已减 "+lost+" 斤 · 还剩 "+(total-lost)+" 斤 · 完成 "+pct+"%";
+    } else {
+      document.getElementById("progressTxt").textContent = "当前 "+w+" 斤 · 目标 "+GOAL_WEIGHT+" 斤";
+    }
+  }
+
+  function renderStats(){
+    var dates = Object.keys(checkins);
+    var total = dates.length;
+    var kcal = dates.reduce(function(s,d){ var i=checkins[d]; return s + (DAYS[i]?DAYS[i].kcal:0); }, 0);
+    // 连续天数
+    var streak = 0;
+    var d = new Date();
+    // 如果今天还没打卡，从昨天开始算连续
+    var t = todayStr();
+    if(!checkins[t]){ d.setDate(d.getDate()-1); }
+    while(true){
+      var s = d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+      if(checkins[s]){ streak++; d.setDate(d.getDate()-1); }
+      else break;
+    }
+    document.getElementById("statStreak").textContent = streak;
+    document.getElementById("statTotal").textContent = total;
+    document.getElementById("statKcal").textContent = kcal;
+  }
+
+  function playIcon(){
+    return '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+  }
+
+  function vidCard(v){
+    return '<div class="vid" data-bvid="'+v.bvid+'" data-title="'+v.title+'">'
+      + '<div class="play-btn">'+playIcon()+'</div>'
+      + '<div class="vid-info"><div class="vid-tag">'+v.tag+'</div>'
+      + '<div class="vid-title">'+v.title+'</div>'
+      + '<div class="vid-meta">'+v.dur+'</div></div></div>';
+  }
+
+  function renderToday(){
+    var i = todayIndex();
+    var day = DAYS[i];
+    document.getElementById("todayBadge").textContent = day.name;
+    document.getElementById("todayTitle").textContent = day.title;
+    document.getElementById("todayKcal").textContent = "预计消耗 "+day.kcal+" 千卡";
+    document.getElementById("todayNote").textContent = day.note;
+    document.getElementById("todayVideos").innerHTML = day.videos.map(vidCard).join("");
+
+    var btn = document.getElementById("todayCheckin");
+    var t = todayStr();
+    if(checkins[t] !== undefined){
+      btn.textContent = "✅ 今日已打卡";
+      btn.classList.add("done");
+    } else {
+      btn.textContent = "✅ 今日打卡";
+      btn.classList.remove("done");
+    }
+  }
+
+  function dateOfThisWeek(idx){
+    var d = new Date();
+    var monday0 = (d.getDay()+6)%7;
+    d.setDate(d.getDate() - monday0 + idx);
+    return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+  }
+  function renderWeek(){
+    var html = "";
+    for(var i=0;i<DAYS.length;i++){
+      var day = DAYS[i];
+      var isToday = (i===todayIndex());
+      var ds = dateOfThisWeek(i);
+      var done = checkins[ds] !== undefined;
+      html += '<div class="day-item'+(isToday?" today":"")+(done?" done":"")+'" data-idx="'+i+'">'
+        + '<div class="day-num">'+day.name.slice(0,1)+'<b>'+day.num+'</b></div>'
+        + '<div class="day-info"><div class="day-name">'+day.title+'</div>'
+        + '<div class="day-desc">'+day.desc+'</div></div>'
+        + '<div class="day-kcal">'+day.kcal+'千卡</div>'
+        + '<div class="day-check'+(done?" on":"")+'">✓</div>'
+        + '</div>';
+    }
+    document.getElementById("weekList").innerHTML = html;
+  }
+
+  function renderWeights(){
+    var html = "";
+    var list = weights.slice().reverse();
+    for(var i=0;i<list.length;i++){
+      html += '<div class="weight-row"><span>'+fmtDate(list[i].date)+'</span><span class="w">'+list[i].w+' 斤</span></div>';
+    }
+    document.getElementById("weightList").innerHTML = html || '<div class="note">还没有体重记录，先记录一个吧。</div>';
+  }
+
+  function renderAll(){
+    renderProgress();
+    renderStats();
+    renderToday();
+    renderWeek();
+    renderWeights();
+  }
+
+  // ===== 打卡 =====
+  document.getElementById("todayCheckin").addEventListener("click", function(){
+    var t = todayStr();
+    if(checkins[t] !== undefined){
+      delete checkins[t];
+      save("lyh_checkins", checkins);
+      renderAll();
+      return;
+    }
+    checkins[t] = todayIndex();
+    save("lyh_checkins", checkins);
+    renderAll();
+  });
+
+  // 点击周计划项 = 预览 + 打卡
+  document.getElementById("weekList").addEventListener("click", function(e){
+    var item = e.target.closest(".day-item");
+    if(!item) return;
+    var idx = +item.getAttribute("data-idx");
+    var day = DAYS[idx];
+    // 弹出该日详情（简单提示）
+    var t = todayStr();
+    if(idx !== todayIndex()){
+      alert(day.name+" · "+day.title+"\n预计 "+day.kcal+" 千卡\n\n只有" + "当天才能打卡，今天("+DAYS[todayIndex()].name+")的计划在上面哦。");
+      return;
+    }
+    // 当天：直接触发打卡
+    document.getElementById("todayCheckin").click();
+  });
+
+  // ===== 体重记录 =====
+  function saveWeight(){
+    var input = document.getElementById("weightVal");
+    var w = parseFloat(input.value);
+    if(!w || w<=0){ alert("请输入有效体重"); return; }
+    var t = todayStr();
+    // 同一天重复记录则覆盖
+    var found = false;
+    for(var i=0;i<weights.length;i++){ if(weights[i].date===t){ weights[i].w=w; found=true; } }
+    if(!found) weights.push({date:t, w:w});
+    save("lyh_weights", weights);
+    input.value = "";
+    renderAll();
+  }
+  document.getElementById("weightSave").addEventListener("click", saveWeight);
+
+  // ===== 视频弹窗 =====
+  function openVideo(bvid, title){
+    document.getElementById("modalTitle").textContent = title;
+    document.getElementById("modalFrame").src = "https://player.bilibili.com/player.html?bvid="+bvid+"&page=1&high_quality=1&danmaku=0&autoplay=1";
+    document.getElementById("modalBili").href = "https://www.bilibili.com/video/"+bvid;
+    document.getElementById("modal").classList.add("show");
+    document.body.style.overflow = "hidden";
+  }
+  function closeVideo(){
+    document.getElementById("modal").classList.remove("show");
+    document.getElementById("modalFrame").src = "";
+    document.body.style.overflow = "";
+  }
+  document.addEventListener("click", function(e){
+    var v = e.target.closest(".vid");
+    if(v){ openVideo(v.getAttribute("data-bvid"), v.getAttribute("data-title")); }
+  });
+  document.getElementById("modalClose").addEventListener("click", closeVideo);
+  document.getElementById("modal").addEventListener("click", function(e){
+    if(e.target===this) closeVideo();
+  });
+
+  renderAll();
+})();
+</script>
+</body>
+</html>
